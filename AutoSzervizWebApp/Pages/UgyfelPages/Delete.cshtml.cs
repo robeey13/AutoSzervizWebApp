@@ -54,6 +54,7 @@ public class DeleteModel : PageModel
             _context.Ugyfelek.Remove(Ugyfel);
             await _context.SaveChangesAsync();
         }
+
         if (vanJavitas)
         {
             ModelState.AddModelError(string.Empty, "Nem lehet törölni az ügyfelet, mert van hozzá kapcsolódó javítás!");
