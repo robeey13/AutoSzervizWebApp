@@ -2,39 +2,37 @@
 @model AutoSzervizWebApp.Pages.UgyfelPages.DeleteModel
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Ügyfél törlése";
 }
 
-<h1>Ügyfél törlése</h1>
-
-<h3>Biztosan szeretné törölni?</h3>
+<h3>Biztosan szeretné törölni az ügyfelet?</h3>
 <div>
     <h4>@Html.DisplayFor(model => model.Ugyfel.Nev)</h4>
     <div asp-validation-summary="All" class="text-danger"></div>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ugyfel.Telefon)
+            Telefonszám
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ugyfel.Telefon)
+            @(Model.Ugyfel.Telefon ?? "Nincs megadva")
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ugyfel.Email)
+            Email cime
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ugyfel.Email)
+            @(Model.Ugyfel.Email ?? "Nincs megadva")
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ugyfel.Javitasok)
+            Javitásainak száma
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ugyfel.Javitasok)
+            @Model.Ugyfel.Javitasok.Count()
         </dd>
     </dl>
     <form method="post">
         <input type="hidden" name="id" value="@Model.Ugyfel.Id" />
-        <input type="submit" value="Törlés" class="btn btn-danger" /> |
-        <a asp-page="./Index">Vissza a listához</a>
+        <input type="submit" value="Törlés" class="btn btn-danger px-4 py-2 rounded-3 shadow-sm fw-semibold" /> |
+        <a asp-page="./Index" class="btn btn-primary px-4 py-2 rounded-3 shadow-sm fw-semibold">Vissza a listához</a>
     </form>
 </div>

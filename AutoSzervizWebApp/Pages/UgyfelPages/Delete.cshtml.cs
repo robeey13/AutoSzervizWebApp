@@ -24,7 +24,7 @@ public class DeleteModel : PageModel
             return NotFound();
         }
 
-        var ugyfel = await _context.Ugyfelek.FirstOrDefaultAsync(m => m.Id == id);
+        var ugyfel = await _context.Ugyfelek.Include(u => u.Javitasok).FirstOrDefaultAsync(m => m.Id == id);
         if (ugyfel is null)
         {
             return NotFound();
@@ -44,7 +44,7 @@ public class DeleteModel : PageModel
             return NotFound();
         }
 
-        var ugyfel = await _context.Ugyfelek.FindAsync(id);
+        var ugyfel = await _context.Ugyfelek.Include(u => u.Javitasok).FirstOrDefaultAsync(m => m.Id == id);
 
         if (ugyfel is null)
         {

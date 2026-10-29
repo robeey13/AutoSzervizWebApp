@@ -25,7 +25,7 @@ public class DeleteModel : PageModel
             return NotFound();
         }
 
-        var javitas = await _context.Javitasok.FirstOrDefaultAsync(m => m.Id == id);
+        var javitas = await _context.Javitasok.Include(j => j.Ugyfel).FirstOrDefaultAsync(m => m.Id == id);
         if (javitas is null)
         {
             return NotFound();
@@ -45,7 +45,7 @@ public class DeleteModel : PageModel
             return NotFound();
         }
 
-        var javitas = await _context.Javitasok.FindAsync(id);
+        var javitas = await _context.Javitasok.Include(j => j.Ugyfel).FirstOrDefaultAsync(m => m.Id == id);
         if (javitas != null)
         {
             Javitas = javitas;

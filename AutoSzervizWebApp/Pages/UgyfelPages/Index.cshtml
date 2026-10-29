@@ -2,28 +2,25 @@
 @model AutoSzervizWebApp.Pages.UgyfelPages.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Ügyfelek főoldala";
 }
-
-<h1>Index</h1>
-
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create" class="btn btn-primary px-4 py-2 rounded-3 shadow-sm fw-semibold">Új ügyfél felvétele</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Ugyfel[0].Nev)
+                Ügyfél neve
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Ugyfel[0].Telefon)
+                Telefonszáma
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Ugyfel[0].Email)
+                Email címe
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Ugyfel[0].Javitasok)
+                Javítások száma
             </th>
             <th></th>
         </tr>
@@ -32,21 +29,21 @@
 @foreach (var item in Model.Ugyfel) {
         <tr>
             <td>
-                @Html.DisplayFor(model => item.Nev)
+                @item.Nev
             </td>
             <td>
-                @Html.DisplayFor(model => item.Telefon)
+                    @(Model.Ugyfel.FirstOrDefault(u => u.Id == item.Id)?.Telefon ?? "Nincs megadva")
             </td>
             <td>
-                @Html.DisplayFor(model => item.Email)
+                    @(Model.Ugyfel.FirstOrDefault(u => u.Id == item.Id)?.Email ?? "Nincs megadva")
             </td>
             <td>
-                @Html.DisplayFor(model => item.Javitasok)
+                    @item.Javitasok.Count()
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-page="./Edit" class="btn btn-primary px-4 py-2 rounded-3 shadow-sm fw-semibold" asp-route-id="@item.Id">Adatok szerkesztése</a> 
+                <a asp-page="./Details" class="btn btn-primary px-4 py-2 rounded-3 shadow-sm fw-semibold" asp-route-id="@item.Id">Részletek</a> 
+                <a asp-page="./Delete" class="btn btn-danger px-4 py-2 rounded-3 shadow-sm fw-semibold" asp-route-id="@item.Id">Törlés</a>
             </td>
         </tr>
 }

@@ -2,10 +2,23 @@
 @model AutoSzervizWebApp.Pages.UgyfelPages.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Ügyfél részletei";
 }
 
 <h1>Javítások: @Model.Ugyfel.Nev</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <dl class="row">
+            <dt class="col-sm-3">Név</dt>
+            <dd class="col-sm-9">@Model.Ugyfel.Nev</dd>
+            <dt class="col-sm-3">Telefonszám</dt>
+            <dd class="col-sm-9">@(Model.Ugyfel.Telefon ?? "Nincs megadva")</dd>
+            <dt class="col-sm-3">Email cím</dt>
+            <dd class="col-sm-9">@(Model.Ugyfel.Email ?? "Nincs megadva")</dd>
+        </dl>
+    </div>
+</div>
 
 <div>
 
@@ -48,5 +61,5 @@
     <h3>Összköltség: @Model.Osszkoltseg.ToString("N2") Ft</h3>
 </div>
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Index" class="btn btn-primary px-4 py-2 rounded-3 shadow-sm fw-semibold">Vissza a listához</a>
 </div>

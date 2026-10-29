@@ -17,8 +17,9 @@ public class IndexModel : PageModel
 
     public IList<Ugyfel> Ugyfel { get; set; } = default!;
 
+
     public async Task OnGetAsync()
     {
-        Ugyfel = await _context.Ugyfelek.ToListAsync();
+        Ugyfel = await _context.Ugyfelek.Include(u => u.Javitasok).ToListAsync();
     }
 }

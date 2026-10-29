@@ -2,12 +2,10 @@
 @model AutoSzervizWebApp.Pages.UgyfelPages.CreateModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Ügyfél létrehozása";
 }
 
-<h1>Create</h1>
-
-<h4>Ugyfel</h4>
+<h4>Ügyfél felvétele</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -15,29 +13,26 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <span class="text-danger">*</span>
-                <label asp-for="Ugyfel.Nev" class="control-label"></label>
-                <input asp-for="Ugyfel.Nev" class="form-control" aria-required="true"/>
+                <label asp-for="Ugyfel.Nev" class="form-label fw-semibold text-dark">Név</label>
+                <input asp-for="Ugyfel.Nev" class="form-control form-control-lg rounded-3 shadow-sm" aria-required="true" />
                 <span asp-validation-for="Ugyfel.Nev" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Ugyfel.Telefon" class="control-label"></label>
-                <input asp-for="Ugyfel.Telefon" class="form-control" />
+                <label asp-for="Ugyfel.Telefon" class="form-label fw-semibold text-dark">Telefonszám</label>
+                <input asp-for="Ugyfel.Telefon" class="form-control form-control-lg rounded-3 shadow-sm" />
                 <span asp-validation-for="Ugyfel.Telefon" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Ugyfel.Email" class="control-label"></label>
-                <input asp-for="Ugyfel.Email" class="form-control" />
+                <label asp-for="Ugyfel.Email" class="form-label fw-semibold text-dark">Email cím</label>
+                <input asp-for="Ugyfel.Email" class="form-control form-control-lg rounded-3 shadow-sm" />
                 <span asp-validation-for="Ugyfel.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-success px-4 py-2 rounded-3 shadow-sm fw-semibold" />
+                <a asp-page="./Index" class="btn btn-primary px-4 py-2 rounded-3 shadow-sm fw-semibold">Vissza a listára</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-page="./Index">Back to List</a>
 </div>
 
 @section Scripts {
