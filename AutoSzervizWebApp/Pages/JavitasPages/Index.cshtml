@@ -14,6 +14,10 @@
 
 <table class="table">
     <thead>
+        @if (!string.IsNullOrEmpty(Model.Hiba))
+        {
+            <div class="alert alert-warning">@Model.Hiba</div>
+        }
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Javitas[0].Ugyfel)

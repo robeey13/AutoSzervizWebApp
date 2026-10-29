@@ -1,8 +1,9 @@
+using AutoSzervizWebApp.Data;
+using AutoSzervizWebApp.Enums;
+using AutoSzervizWebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using AutoSzervizWebApp.Models;
-using AutoSzervizWebApp.Data;
 
 namespace AutoSzervizWebApp.Pages.JavitasPages;
 
@@ -23,5 +24,37 @@ public class IndexModel : PageModel
             .Include(j => j.Ugyfel)
             .OrderByDescending(j => j.FelvetelDatuma)
             .ToListAsync();
+    }
+
+    [TempData]
+    public string? Hiba { get; set; }
+
+    public async Task<IActionResult> OnPostAllapotAsync(int id)
+    {
+        var javitas = await _context.Javitasok.FindAsync(id);
+
+        if (javitas is null)
+        {
+            return NotFound();
+        }
+
+        if (javitas.Allapot == JavitasAllapot.Folyamatban &&
+            (javitas.Koltseg is null || javitas.Koltseg <= 0))
+        {
+            Hiba = "A javítást csak 0-nál nagyobb költséggel lehet készre állítani.";
+            return RedirectToPage();
+        }
+
+        javitas.Allapot = javitas.Allapot switch
+        {
+            JavitasAllapot.Felveve => JavitasAllapot.Folyamatban,
+            JavitasAllapot.Folyamatban => JavitasAllapot.Kesz,
+            JavitasAllapot.Kesz => JavitasAllapot.Kesz,
+            _ => javitas.Allapot
+        };
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToPage();
     }
 }

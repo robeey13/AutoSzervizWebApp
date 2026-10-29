@@ -16,6 +16,9 @@ public class DetailsModel : PageModel
 
     public Ugyfel Ugyfel { get; set; } = default!;
 
+    public decimal Osszkoltseg =>
+        Ugyfel.Javitasok.Sum(j => j.Koltseg ?? 0m);
+
     public async Task<IActionResult> OnGetAsync(int? id)
     {
         if (id is null)
@@ -23,16 +26,16 @@ public class DetailsModel : PageModel
             return NotFound();
         }
 
-        var ugyfel = await _context.Ugyfelek.FirstOrDefaultAsync(m => m.Id == id);
+        var ugyfel = await _context.Ugyfelek
+            .Include(u => u.Javitasok)
+            .FirstOrDefaultAsync(u => u.Id == id);
+
         if (ugyfel is null)
         {
             return NotFound();
         }
-        else
-        {
-            Ugyfel = ugyfel;
-        }
 
+        Ugyfel = ugyfel;
         return Page();
     }
 }

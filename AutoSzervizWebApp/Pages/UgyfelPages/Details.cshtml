@@ -5,39 +5,48 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Javítások</h1>
 
 <div>
-    <h4>Ugyfel</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ugyfel.Nev)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ugyfel.Nev)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ugyfel.Telefon)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ugyfel.Telefon)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ugyfel.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ugyfel.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ugyfel.Javitasok)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ugyfel.Javitasok)
-        </dd>
-    </dl>
+
+    @if (!Model.Ugyfel.Javitasok.Any())
+    {
+        <p>Ehhez az ügyfélhez még nincs javítás rögzítve.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Rendszám</th>
+                    <th>Leírás</th>
+                    <th>Költség</th>
+                    <th>Állapot</th>
+                    <th>Felvétel dátuma</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var javitas in Model.Ugyfel.Javitasok
+                    .OrderByDescending(j => j.FelvetelDatuma))
+                {
+                    <tr>
+                        <td>@javitas.Rendszam</td>
+                        <td>@javitas.Leiras</td>
+                        <td>
+                            @(javitas.Koltseg.HasValue
+                                ? $"{javitas.Koltseg.Value:N2} Ft"
+                                : "Nincs megadva")
+                        </td>
+                        <td>@javitas.Allapot</td>
+                        <td>@javitas.FelvetelDatuma.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <h3>Összköltség: @Model.Osszkoltseg.ToString("N2") Ft</h3>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Ugyfel.Id">Edit</a> |
     <a asp-page="./Index">Back to List</a>
 </div>
