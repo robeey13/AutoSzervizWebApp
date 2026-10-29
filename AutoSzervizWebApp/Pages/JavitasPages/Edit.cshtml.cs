@@ -1,8 +1,10 @@
+using AutoSzervizWebApp.Data;
+using AutoSzervizWebApp.DTOs;
+using AutoSzervizWebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AutoSzervizWebApp.Models;
-using AutoSzervizWebApp.Data;
 
 namespace AutoSzervizWebApp.Pages.JavitasPages;
 
@@ -16,7 +18,16 @@ public class EditModel : PageModel
     }
 
     [BindProperty]
-    public Javitas Javitas { get; set; } = default!;
+    public JavitasEditDTO Javitas { get; set; } = default!;
+
+    public SelectList UgyfelekSelectList { get; set; } = default!;
+
+    private async Task UgyfelekBetolteseAsync()
+    {
+        var ugyfelek = await _context.Ugyfelek.ToListAsync();
+        UgyfelekSelectList = new SelectList(
+            ugyfelek, "Id", "Nev", Javitas.UgyfelId);
+    }
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {
@@ -26,13 +37,25 @@ public class EditModel : PageModel
         }
 
         var javitas = await _context.Javitasok.FirstOrDefaultAsync(m => m.Id == id);
+
         if (javitas is null)
         {
             return NotFound();
         }
-        Javitas = javitas;
+        Javitas = new JavitasEditDTO
+        {
+            Id = javitas.Id,
+            UgyfelId = javitas.UgyfelId,
+            Rendszam = javitas.Rendszam,
+            Leiras = javitas.Leiras,
+            Koltseg = javitas.Koltseg
+        };
+
+        await UgyfelekBetolteseAsync();
         return Page();
     }
+
+
 
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see https://aka.ms/RazorPagesCRUD.
@@ -40,10 +63,16 @@ public class EditModel : PageModel
     {
         if (!ModelState.IsValid)
         {
+            await UgyfelekBetolteseAsync();
             return Page();
         }
 
-        _context.Attach(Javitas).State = EntityState.Modified;
+        Javitas modositandoJavitas = await _context.Javitasok.FindAsync(Javitas.Id);
+
+        modositandoJavitas.UgyfelId = Javitas.UgyfelId;
+        modositandoJavitas.Rendszam = Javitas.Rendszam;
+        modositandoJavitas.Leiras = Javitas.Leiras;
+        modositandoJavitas.Koltseg = Javitas.Koltseg;
 
         try
         {

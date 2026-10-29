@@ -22,10 +22,16 @@ public class CreateModel : PageModel
 
     public SelectList UgyfelekSelectList { get; set; } = default!;
 
-    public async Task<IActionResult> OnGetAsync()
+    private async Task UgyfelekBetolteseAsync()
     {
         var ugyfelek = await _context.Ugyfelek.ToListAsync();
-        UgyfelekSelectList = new SelectList(ugyfelek, "Id", "Nev", Javitas.UgyfelId);
+        UgyfelekSelectList = new SelectList(
+            ugyfelek, "Id", "Nev", Javitas.UgyfelId);
+    }
+
+    public async Task<IActionResult> OnGetAsync()
+    {
+        await UgyfelekBetolteseAsync();
         return Page();
     }
 
@@ -33,8 +39,7 @@ public class CreateModel : PageModel
     {
         if (!ModelState.IsValid)
         {
-            var ugyfelek = await _context.Ugyfelek.ToListAsync();
-            UgyfelekSelectList = new SelectList(ugyfelek, "Id", "Nev", Javitas.UgyfelId);
+            await UgyfelekBetolteseAsync();
             return Page();
         }
 
