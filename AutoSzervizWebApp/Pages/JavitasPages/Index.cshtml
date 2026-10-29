@@ -1,0 +1,84 @@
+@page
+@model AutoSzervizWebApp.Pages.JavitasPages.IndexModel
+@using AutoSzervizWebApp.Enums
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Uj javitas</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Javitas[0].Ugyfel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Javitas[0].Rendszam)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Javitas[0].Leiras)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Javitas[0].Koltseg)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Javitas[0].Allapot)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Javitas[0].FelvetelDatuma)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Javitas) {
+        <tr>
+            <td>
+                    @item.Ugyfel?.Nev
+            </td>
+            <td>
+                    @item.Rendszam
+            </td>
+            <td>
+                    @item.Leiras
+            </td>
+            <td>
+                    @item.Koltseg
+            </td>
+            <td>
+                    @item.Allapot
+            </td>
+            <td>
+                    @if (item.Allapot != JavitasAllapot.Kesz)
+                    {
+                        <form method="post"
+                              asp-page-handler="Allapot">
+                            <input type="hidden"
+                                   name="id"
+                                   value="@item.Id" />
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+                                Következő állapot
+                            </button>
+                        </form>
+                    }
+                </td>
+            <td>
+                    @item.FelvetelDatuma.ToString("yyyy-MM-dd")
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
