@@ -15,7 +15,6 @@ public class DeleteModel : PageModel
         _context = context;
     }
 
-    [BindProperty]
     public Ugyfel Ugyfel { get; set; } = default!;
 
     public async Task<IActionResult> OnGetAsync(int? id)
@@ -46,20 +45,24 @@ public class DeleteModel : PageModel
         }
 
         var ugyfel = await _context.Ugyfelek.FindAsync(id);
-        var vanJavitas = await _context.Javitasok.AnyAsync(j => j.UgyfelId == id);
 
-        if (ugyfel != null && !vanJavitas)
+        if (ugyfel is null)
         {
-            Ugyfel = ugyfel;
-            _context.Ugyfelek.Remove(Ugyfel);
-            await _context.SaveChangesAsync();
+            return NotFound();
         }
+
+        Ugyfel = ugyfel;
+
+        var vanJavitas = await _context.Javitasok.AnyAsync(j => j.UgyfelId == id);
 
         if (vanJavitas)
         {
             ModelState.AddModelError(string.Empty, "Nem lehet törölni az ügyfelet, mert van hozzá kapcsolódó javítás!");
             return Page();
         }
+
+        _context.Ugyfelek.Remove(ugyfel);
+        await _context.SaveChangesAsync();
 
         return RedirectToPage("./Index");
     }
