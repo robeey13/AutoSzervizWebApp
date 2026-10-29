@@ -18,6 +18,17 @@
         {
             <div class="alert alert-warning">@Model.Hiba</div>
         }
+
+
+        <form method="get" class="mb-3">
+            <label asp-for="AllapotSzuro">Szűrés állapot szerint</label>
+            <select asp-for="AllapotSzuro"
+                    asp-items="Html.GetEnumSelectList<JavitasAllapot>()"
+                    class="form-select">
+            </select>
+            <button type="submit" class="btn btn-primary mt-2">Szűrés</button> 
+            <a asp-page="./Index" class="btn btn-secondary mt-2">Szűrés törlése</a>
+        </form>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Javitas[0].Ugyfel)

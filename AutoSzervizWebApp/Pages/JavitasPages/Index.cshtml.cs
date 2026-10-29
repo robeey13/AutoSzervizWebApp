@@ -18,12 +18,19 @@ public class IndexModel : PageModel
 
     public IList<Javitas> Javitas { get; set; } = new List<Javitas>();
 
+    [BindProperty(SupportsGet = true)]
+    public JavitasAllapot? AllapotSzuro { get; set; }
+
     public async Task OnGetAsync()
     {
-        Javitas = await _context.Javitasok
-            .Include(j => j.Ugyfel)
-            .OrderByDescending(j => j.FelvetelDatuma)
-            .ToListAsync();
+        IQueryable<Javitas> query = _context.Javitasok.Include(j => j.Ugyfel);
+
+        if (AllapotSzuro.HasValue)
+        {
+            query = query.Where(j => j.Allapot == AllapotSzuro.Value);
+        }
+
+        Javitas = await query.OrderByDescending(j => j.FelvetelDatuma).ToListAsync();
     }
 
     [TempData]
